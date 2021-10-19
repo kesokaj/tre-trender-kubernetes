@@ -1,0 +1,18 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-app02-arrowdemo-xyz
+  namespace: traefik-system
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`traefik.app02.arrowdemo.xyz`)
+      services:
+        - kind: TraefikService
+          name: api@internal
+  tls:
+    certResolver: default
+

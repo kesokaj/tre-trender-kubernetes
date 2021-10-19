@@ -1,0 +1,68 @@
+alertmanager:
+  enabled: true
+  fullnameOverride: alertmanager
+  strategy:
+    type: Recreate
+  persistentVolume:
+    enabled: true
+    size: 1Gi
+    storageClass: default
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+
+server:
+  enabled: true
+  fullnameOverride: prometheus
+  strategy:
+    type: Recreate
+  retention: 30d
+  extraFlags:
+    - web.enable-lifecycle
+    - web.enable-admin-api
+    - storage.tsdb.no-lockfile
+    - storage.tsdb.wal-compression
+    - storage.tsdb.retention.size=15GB
+  global:
+    scrape_interval: 30m
+    scrape_timeout: 10s
+    evaluation_interval: 1m
+  persistentVolume:
+    enabled: true
+    size: 16Gi
+    storageClass: default
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  service:
+    type: ClusterIP
+
+pushgateway:
+  enabled: true
+  fullnameOverride: pushgateway
+  strategy:
+    type: Recreate
+  persistentVolume:
+    enabled: true
+    size: 1Gi
+    storageClass: default
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+
+nodeExporter:
+  enabled: true
+  fullnameOverride: node-exporter
+  updateStrategy:
+    type: OnDelete
+  resources:
+    requests:
+      cpu: 100m
+      memory: 30Mi
+
+kubeStateMetrics:
+  enabled: true
+  fullnameOverride: kube-state-metrics

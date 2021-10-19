@@ -1,0 +1,18 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kubeapps-app02-arrowdemo-xyz
+  namespace: kubeapps
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`kubeapps.app02.arrowdemo.xyz`)
+    kind: Rule
+    services:
+    - name: kubeapps
+      port: 80
+  tls:
+    certResolver: default
+

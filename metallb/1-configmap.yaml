@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: |
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      - 10.1.103.26-10.1.103.29
+    - name: traefik
+      protocol: layer2
+      addresses:
+      - 10.1.103.25/32

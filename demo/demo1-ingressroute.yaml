@@ -1,0 +1,60 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: demo1
+  labels:
+    app: demo1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo1
+  template:
+    metadata:
+      labels:
+        app: demo1
+    spec:
+      containers:
+        - name: demo1
+          image: nginx:latest
+          volumeMounts:
+          - name: config-volume
+            mountPath: /usr/share/nginx/html/
+          ports:
+            - name: web
+              containerPort: 80
+      volumes:
+        - name: config-volume
+          configMap:
+            name: demo1-index-html
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo1
+spec:
+  type: ClusterIP    
+  ports:
+    - protocol: TCP
+      name: web
+      port: 80
+  selector:
+    app: demo1
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: demo1-app02-arrowdemo-xyz
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`demo1.app02.arrowdemo.xyz`)
+    kind: Rule
+    services:
+    - name: demo1
+      port: 80
+  tls:
+    certResolver: default

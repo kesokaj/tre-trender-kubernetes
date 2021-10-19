@@ -1,0 +1,7 @@
+config:
+  lokiAddress: http://loki/loki/api/v1/push
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
